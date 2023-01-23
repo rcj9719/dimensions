@@ -134,14 +134,20 @@ public class CorridorSegment : MonoBehaviour
         int powerUpCol = -1;
         int powerUpRow = -1;
 
-        if (winNo == 0)
-        {
-            int isPowerUpPresent = Random.Range(0, 2);
-            powerUpType = isPowerUpPresent == 1 ? Random.Range(0, 2) : -1;
+        //if (winNo == 0)
+        //{
+        //    int isPowerUpPresent = Random.Range(0, 2);
+        //    powerUpType = isPowerUpPresent == 1 ? Random.Range(0, 2) : -1;
 
-            powerUpCol = Random.Range(column, rightbound);
-            powerUpRow = Random.Range(row, upperbound);
-        }
+        //    powerUpCol = Random.Range(column, rightbound);
+        //    powerUpRow = Random.Range(row, upperbound);
+        //}
+
+        powerUpType = 0;
+
+        powerUpCol = Random.Range(column, rightbound);
+        powerUpRow = Random.Range(row, upperbound);
+
         for (int i = column; i < rightbound; i++)
         {
             for (int j = row; j < upperbound; j++)

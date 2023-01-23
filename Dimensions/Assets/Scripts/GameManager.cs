@@ -81,18 +81,41 @@ public class GameManager : MonoBehaviour    // creating a singleton
         return wallCnt;
     }
 
+    public bool isFreezePowerAvailable()
+    {
+        return freezeCnt > 0;
+    }
+
     public void IncrementPower(PowerType powerType)
     {
         switch(powerType)
         {
             case PowerType.FREEZE:
-                freezeCnt++;
                 freezePowerUI.SetActive(true);
+                freezeCnt++;
                 freezeCntUI.text = freezeCnt.ToString();
                 break;
             case PowerType.HIDE:
+                invisiblePowerUI.SetActive(false);
                 invCnt++;
-                invisiblePowerUI.SetActive(true);
+                invCntUI.text = invCnt.ToString();
+                break;
+        }
+    }
+
+    public void UsePower(PowerType powerType)
+    {
+        switch (powerType)
+        {
+            case PowerType.FREEZE:
+                Debug.Log("[GameManager][UsePower] freezeCnt = " + freezeCnt.ToString());
+                freezeCnt--;
+                if(freezeCnt == 0) freezePowerUI.SetActive(false);
+                freezeCntUI.text = freezeCnt.ToString();
+                break;
+            case PowerType.HIDE:
+                invCnt--;
+                if (invCnt == 0) invisiblePowerUI.SetActive(false);
                 invCntUI.text = invCnt.ToString();
                 break;
         }

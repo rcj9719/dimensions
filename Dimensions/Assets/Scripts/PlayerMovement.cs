@@ -17,22 +17,37 @@ public class PlayerMovement : MonoBehaviour
     float xScaleInput = 0.0f;
     float yScaleInput = 0.0f;
 
+    bool freeze = false;
+    bool hide = false;
+
+    float tActive;
+
     public float speedIncreasePerPoint = 0.01f;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        tActive = 0.0f;
     }
 
     private void FixedUpdate()
     {
         if (!alive) return;
 
-        Vector3 forwardMove = transform.forward * speed * Time.fixedDeltaTime;
+        float fwdSpeed = speed;
+
+        //freeze = Input.GetButton("Freeze");
+        //hide = Input.GetButton("Hide");
+        if (freeze)
+        {
+            //Debug.Log("[PlayerMovement][FixedUpdate] Freeze");
+            fwdSpeed = 0.0f;
+        }
+        //if (tActive > 3.0) freeze = false;
+        Vector3 forwardMove = transform.forward * fwdSpeed * Time.fixedDeltaTime;
         Vector3 horizontalMove = transform.right * horizontalInput * speed * Time.fixedDeltaTime;// * horizontalMultiplier;
         Vector3 verticalMove = transform.up * verticalInput * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + forwardMove + horizontalMove + verticalMove);
-
 
         float xScale = scaleSpeed * Time.fixedDeltaTime * xScaleInput;
         float yScale = scaleSpeed * Time.fixedDeltaTime * yScaleInput;
@@ -41,8 +56,6 @@ public class PlayerMovement : MonoBehaviour
         if ((transform.localScale.y + yScale) < 0.5) yScale = 0.0f;
 
         transform.localScale += new Vector3(xScale, yScale, 0.0f);
-
-
     }
 
     //// Update is called once per frame
@@ -52,6 +65,21 @@ public class PlayerMovement : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
         xScaleInput = Input.GetAxis("ScaleX");
         yScaleInput = Input.GetAxis("ScaleY");
+
+        if (Input.GetButton("Freeze"))
+        {
+            tActive = 3.0f;
+        }
+
+        if (tActive > 0)
+        {
+            freeze = true;
+            tActive -= Time.deltaTime;
+        }
+        else
+        {
+            freeze = false;
+        }
 
         //if(transform.position.y < -1)
         //{
