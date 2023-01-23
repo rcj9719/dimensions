@@ -1,0 +1,4 @@
+repository "EndlessRunner@local"
+  path "/"
+    br "/main"
+    co "/main"
