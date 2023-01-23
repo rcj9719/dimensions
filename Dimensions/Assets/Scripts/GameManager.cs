@@ -86,6 +86,11 @@ public class GameManager : MonoBehaviour    // creating a singleton
         return freezeCnt > 0;
     }
 
+    public bool isInvisiblePowerAvailable()
+    {
+        return invCnt > 0;
+    }
+
     public void IncrementPower(PowerType powerType)
     {
         switch(powerType)
@@ -96,7 +101,7 @@ public class GameManager : MonoBehaviour    // creating a singleton
                 freezeCntUI.text = freezeCnt.ToString();
                 break;
             case PowerType.HIDE:
-                invisiblePowerUI.SetActive(false);
+                invisiblePowerUI.SetActive(true);
                 invCnt++;
                 invCntUI.text = invCnt.ToString();
                 break;

@@ -17,17 +17,21 @@ public class PlayerMovement : MonoBehaviour
     float xScaleInput = 0.0f;
     float yScaleInput = 0.0f;
 
+    // PowerUp variables
     bool freeze = false;
-    bool hide = false;
+    bool freezeFuncCalled = false;
+    float freezeActiveTime;
 
-    float tActive;
+    bool hideFuncCalled = false;
+    float hideActiveTime;
 
     public float speedIncreasePerPoint = 0.01f;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        tActive = 0.0f;
+        freezeActiveTime = 0.0f;
+        hideActiveTime = 0.0f;
     }
 
     private void FixedUpdate()
@@ -36,16 +40,13 @@ public class PlayerMovement : MonoBehaviour
 
         float fwdSpeed = speed;
 
-        //freeze = Input.GetButton("Freeze");
-        //hide = Input.GetButton("Hide");
         if (freeze)
         {
-            //Debug.Log("[PlayerMovement][FixedUpdate] Freeze");
             fwdSpeed = 0.0f;
         }
-        //if (tActive > 3.0) freeze = false;
+
         Vector3 forwardMove = transform.forward * fwdSpeed * Time.fixedDeltaTime;
-        Vector3 horizontalMove = transform.right * horizontalInput * speed * Time.fixedDeltaTime;// * horizontalMultiplier;
+        Vector3 horizontalMove = transform.right * horizontalInput * speed * Time.fixedDeltaTime;
         Vector3 verticalMove = transform.up * verticalInput * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + forwardMove + horizontalMove + verticalMove);
 
@@ -68,23 +69,49 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButton("Freeze"))
         {
-            tActive = 3.0f;
+            freezeActiveTime = 3.0f;
+
+            if (!freezeFuncCalled && GameManager.inst.isFreezePowerAvailable())
+            {
+                freezeFuncCalled = true;
+                GameManager.inst.UsePower(PowerType.FREEZE);
+            }
         }
 
-        if (tActive > 0)
+        if (freezeActiveTime > 0 && freezeFuncCalled)
         {
             freeze = true;
-            tActive -= Time.deltaTime;
+            freezeActiveTime -= Time.deltaTime;
         }
         else
         {
+            freezeFuncCalled = false;
             freeze = false;
         }
 
-        //if(transform.position.y < -1)
-        //{
-        //    Die();
-        //}
+
+        // Invisibility
+        if (Input.GetButton("Hide"))
+        {
+            hideActiveTime = 3.0f;
+
+            if (!hideFuncCalled && GameManager.inst.isInvisiblePowerAvailable())
+            {
+                hideFuncCalled = true;
+                GameManager.inst.UsePower(PowerType.HIDE);
+            }
+        }
+
+        if (hideActiveTime > 0 && hideFuncCalled)
+        {
+            this.GetComponent<Collider>().enabled = false;
+            hideActiveTime -= Time.deltaTime;
+        }
+        else
+        {
+            hideFuncCalled = false;
+            this.GetComponent<Collider>().enabled = true;
+        }
     }
 
     public void Die()

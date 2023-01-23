@@ -143,7 +143,7 @@ public class CorridorSegment : MonoBehaviour
         //    powerUpRow = Random.Range(row, upperbound);
         //}
 
-        powerUpType = 0;
+        powerUpType = 1;
 
         powerUpCol = Random.Range(column, rightbound);
         powerUpRow = Random.Range(row, upperbound);
