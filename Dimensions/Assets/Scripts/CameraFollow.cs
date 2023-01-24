@@ -15,8 +15,11 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         Vector3 targetPos = player.position + offset;
-        //targetPos.x = 0;
-        //targetPos.y = 5;
+        if(gameObject.name == "MinimapCamera")
+        {
+            targetPos.x = 0;
+            targetPos.y = 5;
+        }
         transform.position = targetPos;
     }
 }
