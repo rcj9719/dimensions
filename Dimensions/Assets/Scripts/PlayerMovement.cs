@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -118,15 +119,13 @@ public class PlayerMovement : MonoBehaviour
     {
         alive = false;
         audioSource.Play();
-        // Restart the game
+        // Game Over
         Invoke("gameOver", 2);   // calls restart function after 2 seconds
     }
 
     void gameOver()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        //GameObject.FindGameObjectWithTag("Finish").SetActive(true);
-        //GameObject.FindGameObjectWithTag("PlayScreen").SetActive(false);
+        GameManager.inst.loadGameOverScene();
     }
 
     public bool isAlive()

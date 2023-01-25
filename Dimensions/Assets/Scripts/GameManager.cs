@@ -126,16 +126,25 @@ public class GameManager : MonoBehaviour    // creating a singleton
         }
     }
 
-    public void playAgain()
+    public void loadGameOverScene()
     {
         //GameObject.FindGameObjectWithTag("PlayScreen").SetActive(true);
         //GameObject.FindGameObjectWithTag("Finish").SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log("[GamePlay] score:" + score);
+        PlayerPrefs.SetInt("Score", score);
+        PlayerPrefs.SetInt("Walls", wallCnt);
+        SceneManager.LoadScene("GameOver");
     }
 
     private void Awake()
     {
         inst = this;
+    }
+
+    private void Start()
+    {
+        PlayerPrefs.SetInt("Score", 0);
+        PlayerPrefs.SetInt("Walls", 0);
     }
 
 }
