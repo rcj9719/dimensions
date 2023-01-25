@@ -33,4 +33,8 @@ public class StartMenuManager : MonoBehaviour
     {
         PlayerPrefs.SetString("PlayerColor", "yellow");
     }
+
+    public void exitGame() { 
+        Application.Quit();
+    }
 }
